@@ -1,2 +1,0 @@
-# shakatours.github.io
-website

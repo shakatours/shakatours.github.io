@@ -976,7 +976,11 @@
           const err = doc.querySelector('parsererror');
           if (err) throw new Error('XML parse error');
     
-          const items = Array.from(doc.querySelectorAll('channel > item'));
+          // Collect and sort by pubDate (newest first)
+          const items = Array.from(doc.querySelectorAll('channel > item'))
+              .map(el => ({ el, date: new Date(el.querySelector('pubDate')?.textContent || 0) }))
+              .sort((a, b) => b.date - a.date)
+              .map(x => x.el);
           const cards = items.slice(0, 12).map(item => {
             const title = getText(item, 'title');
             const link = getText(item, 'link');
